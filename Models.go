@@ -6,15 +6,17 @@ import (
 )
 
 type Accession struct {
-	ID             int       `json:"id"`
-	AccessionNum   string    `json:"accession_num"`
-	AccessionNote  string    `json:"accession_note"`
-	AccessionState string    `json:"accession_state"`
-	CollectionID   int       `json:"collection_id"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
-	CreatedBy      int       `json:"created_by"`
-	ModifiedBy     int       `json:"modified_at"`
+	ID               int       `json:"id"`
+	AccessionNum     string    `json:"accession_num"`
+	AccessionNote    string    `json:"accession_note"`
+	AccessionState   string    `json:"accession_state"`
+	CollectionID     int       `json:"collection_id"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
+	CreatedBy        int       `json:"created_by"`
+	ModifiedBy       int       `json:"modified_at"`
+	ASpaceRepository int       `json:"aspace_repository"`
+	AspaceID         int       `json:"aspace_id"`
 }
 
 type Collection struct {

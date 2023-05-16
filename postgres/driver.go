@@ -53,7 +53,6 @@ func getDBConfig(configFile string, environment string) error {
 	dbc := DBConfig{}
 	for k, v := range dbConfigMap {
 		if environment == k {
-			fmt.Println(v.Port)
 			dbc.Host = v.Host
 			dbc.Port = v.Port
 			dbc.SSLMode = v.SSLMode

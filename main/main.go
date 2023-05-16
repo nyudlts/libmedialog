@@ -1,9 +1,27 @@
 package main
 
-import postgres_driver "libmedialog/postgres"
+import (
+	"gorm.io/gorm"
+	mongoDriver "libmedialog/mongo"
+	postgresDriver "libmedialog/postgres"
+)
+
+var pgClient *gorm.DB
 
 func main() {
-	if err := postgres_driver.InitDB("dbconfig.yml", "localhost"); err != nil {
+	if err := postgresDriver.InitDB("dbconfig.yml", "localhost"); err != nil {
 		panic(err)
 	}
+
+	if err := mongoDriver.InitMongo(); err != nil {
+		panic(err)
+	}
+
+	pgClient = postgresDriver.MedialogDB
+
+	err := mongoDriver.InsertAllIntoMongoDB(pgClient)
+	if err != nil {
+		panic(err)
+	}
+
 }
