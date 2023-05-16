@@ -1,4 +1,4 @@
-package postgres
+package postgres_driver
 
 import (
 	"fmt"
@@ -20,29 +20,34 @@ type DBConfig struct {
 var dbConfig *DBConfig
 var MedialogDB *gorm.DB
 
-func InitDB(configFile string, environment string) {
-	GetDBConfig(configFile, environment)
+func InitDB(configFile string, environment string) error {
+	if err := getDBConfig(configFile, environment); err != nil {
+		return err
+	}
+
 	var err error
 	MedialogDB, err = gorm.Open(postgres.Open(dbConfig.getDSN()), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		return err
 	}
+
+	return nil
 }
 
 func (dbconfig *DBConfig) getDSN() string {
 	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s", dbconfig.Host, dbconfig.Username, dbconfig.Password, dbconfig.Database, dbconfig.Port, dbconfig.SSLMode)
 }
 
-func GetDBConfig(configFile string, environment string) {
+func getDBConfig(configFile string, environment string) error {
 	dbConfigMap := map[string]DBConfig{}
 	configBytes, err := os.ReadFile(configFile)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = yaml.Unmarshal(configBytes, &dbConfigMap)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	dbc := DBConfig{}
@@ -58,4 +63,5 @@ func GetDBConfig(configFile string, environment string) {
 		}
 	}
 	dbConfig = &dbc
+	return nil
 }
